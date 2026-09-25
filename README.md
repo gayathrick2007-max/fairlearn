@@ -1,13 +1,3 @@
----
-title: FairLoan
-emoji: ⚖️
-colorFrom: blue
-colorTo: red
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # ⚖️ FairLoan — when the training data has a bias
 
 Catch it → Fix it → Prove it. A loan-approval model learns an unfairness that was hiding in its historical data; we measure it, fix it with Fairlearn, and show one real person whose decision flips.
@@ -46,9 +36,3 @@ streamlit run app.py     # dashboard at http://localhost:8501
 
 The spread across splits is large (the baseline's qualified gap is 27 ± 17 pts) because each test set has only about 34 women. **Deleting the gender column works about as well as the Fairlearn fix on this data**, because the other columns barely hint at gender. The dashboard says so on the Fix tab and the Honest limits tab. Average over 20 splits: 6.8 of 23 qualified women are rejected by the baseline versus 1.1 after the fix; changing only gender flips 27% of the baseline's decisions for women versus 2%.
 
-## Deploy (public link for judges)
-**Option A: Streamlit Community Cloud (simplest).** Push this folder to GitHub → share.streamlit.io → New app → pick the repo, main file `app.py`.
-
-**Option B: Hugging Face Spaces.** New Space → SDK *Docker* → upload these files (the README front-matter above is already set up, `Dockerfile` listens on 7860). *Not tested from the build environment; if the build fails, check the Space's build log.*
-
-Always keep `streamlit run app.py` working locally on a laptop as a backup in case venue Wi-Fi fails.
