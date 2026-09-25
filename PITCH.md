@@ -28,7 +28,7 @@ Numbers are the average of 20 random splits on the Dream Housing Finance data (6
 
 **Is this real CIBIL data?** No. Bureau data is private. This is a public loan-eligibility dataset in an Indian housing-finance setting.
 
-**Is it legal to use gender in the decision?** ThresholdOptimizer needs the group at decision time and applies different cut-offs per group, which some jurisdictions restrict. Fairlearn's ExponentiatedGradient trains fairness in without needing it at prediction time. We flag this as a limitation.
+**Is it legal to use gender in the decision?** ThresholdOptimizer needs the group at decision time and applies different cut-offs per group, which some jurisdictions restrict. We also tested Fairlearn's ExponentiatedGradient, which trains fairness in and never sees gender at prediction time: approval gap 3 points, accuracy 0.800, on the same 20 splits. On about 600 rows that result moves around, so we call it promising, not proven.
 
 **Only about 600 rows?** Yes, and only about 34 women in each test set, so single-split numbers swing a lot (the baseline's qualified-approval gap is 27 ± 17 points across splits). That is why we average 20 splits and show the spread.
 

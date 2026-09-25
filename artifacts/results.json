@@ -76,6 +76,25 @@
       "demographic_parity_difference": 0.022208883553421432,
       "equalized_odds_difference": 0.023870417732310245
     },
+    "Fairlearn in-training (no gender at decision time)": {
+      "accuracy": 0.8453038674033149,
+      "by_group": {
+        "Male": {
+          "approval_rate": 0.8231292517006803,
+          "tpr": 0.9901960784313726,
+          "fpr": 0.4444444444444444
+        },
+        "Female": {
+          "approval_rate": 0.8235294117647058,
+          "tpr": 0.9565217391304348,
+          "fpr": 0.5454545454545454
+        }
+      },
+      "approval_gap": -0.0004001600640255454,
+      "equal_opportunity_gap": 0.03367433930093777,
+      "demographic_parity_difference": 0.0004001600640255454,
+      "equalized_odds_difference": 0.101010101010101
+    },
     "Reference (trained on fair labels)": {
       "accuracy": 0.8453038674033149,
       "by_group": {
@@ -184,6 +203,17 @@
         "dp_diff": 0.0383,
         "eo_diff": 0.0962
       },
+      "Fairlearn in-training (no gender at decision time)": {
+        "accuracy": 0.8003,
+        "approval_gap": 0.0256,
+        "equal_opportunity_gap": -0.005,
+        "male_approval": 0.8565,
+        "female_approval": 0.8309,
+        "male_tpr": 0.9711,
+        "female_tpr": 0.9761,
+        "dp_diff": 0.0355,
+        "eo_diff": 0.1015
+      },
       "Fixed (Fairlearn)": {
         "accuracy": 0.7928,
         "approval_gap": 0.0236,
@@ -230,6 +260,17 @@
         "dp_diff": 0.0252,
         "eo_diff": 0.0722
       },
+      "Fairlearn in-training (no gender at decision time)": {
+        "accuracy": 0.0228,
+        "approval_gap": 0.0341,
+        "equal_opportunity_gap": 0.0309,
+        "male_approval": 0.024,
+        "female_approval": 0.0284,
+        "male_tpr": 0.0164,
+        "female_tpr": 0.0298,
+        "dp_diff": 0.0229,
+        "eo_diff": 0.0683
+      },
       "Fixed (Fairlearn)": {
         "accuracy": 0.0251,
         "approval_gap": 0.0506,
@@ -260,7 +301,236 @@
       "baseline_flip_rate": 0.26764705882352946,
       "fixed_flip_rate": 0.016176470588235296,
       "baseline_rejected_but_approved_as_male": 0.26764705882352946
-    }
+    },
+    "dial": {
+      "0.2": {
+        "accuracy": 0.8025,
+        "approval_gap": 0.0217,
+        "equal_opportunity_gap": -0.01,
+        "female_approval": 0.8412
+      },
+      "0.22": {
+        "accuracy": 0.8022,
+        "approval_gap": 0.0232,
+        "equal_opportunity_gap": -0.0078,
+        "female_approval": 0.8397
+      },
+      "0.24": {
+        "accuracy": 0.8017,
+        "approval_gap": 0.0262,
+        "equal_opportunity_gap": -0.0035,
+        "female_approval": 0.8368
+      },
+      "0.26": {
+        "accuracy": 0.8019,
+        "approval_gap": 0.0276,
+        "equal_opportunity_gap": -0.0035,
+        "female_approval": 0.8353
+      },
+      "0.28": {
+        "accuracy": 0.8022,
+        "approval_gap": 0.0291,
+        "equal_opportunity_gap": -0.0035,
+        "female_approval": 0.8338
+      },
+      "0.3": {
+        "accuracy": 0.8017,
+        "approval_gap": 0.035,
+        "equal_opportunity_gap": 0.003,
+        "female_approval": 0.8279
+      },
+      "0.32": {
+        "accuracy": 0.8006,
+        "approval_gap": 0.0438,
+        "equal_opportunity_gap": 0.0139,
+        "female_approval": 0.8191
+      },
+      "0.34": {
+        "accuracy": 0.8003,
+        "approval_gap": 0.057,
+        "equal_opportunity_gap": 0.0248,
+        "female_approval": 0.8059
+      },
+      "0.36": {
+        "accuracy": 0.7986,
+        "approval_gap": 0.0688,
+        "equal_opportunity_gap": 0.04,
+        "female_approval": 0.7941
+      },
+      "0.38": {
+        "accuracy": 0.7992,
+        "approval_gap": 0.0894,
+        "equal_opportunity_gap": 0.053,
+        "female_approval": 0.7735
+      },
+      "0.4": {
+        "accuracy": 0.7972,
+        "approval_gap": 0.1144,
+        "equal_opportunity_gap": 0.0791,
+        "female_approval": 0.7485
+      },
+      "0.42": {
+        "accuracy": 0.797,
+        "approval_gap": 0.1276,
+        "equal_opportunity_gap": 0.09,
+        "female_approval": 0.7353
+      },
+      "0.44": {
+        "accuracy": 0.7945,
+        "approval_gap": 0.1526,
+        "equal_opportunity_gap": 0.1183,
+        "female_approval": 0.7103
+      },
+      "0.46": {
+        "accuracy": 0.7895,
+        "approval_gap": 0.185,
+        "equal_opportunity_gap": 0.1617,
+        "female_approval": 0.6779
+      },
+      "0.48": {
+        "accuracy": 0.7831,
+        "approval_gap": 0.2335,
+        "equal_opportunity_gap": 0.2226,
+        "female_approval": 0.6294
+      },
+      "0.5": {
+        "accuracy": 0.7812,
+        "approval_gap": 0.2909,
+        "equal_opportunity_gap": 0.2726,
+        "female_approval": 0.5721
+      },
+      "0.52": {
+        "accuracy": 0.774,
+        "approval_gap": 0.3467,
+        "equal_opportunity_gap": 0.3422,
+        "female_approval": 0.5162
+      },
+      "0.54": {
+        "accuracy": 0.7685,
+        "approval_gap": 0.3879,
+        "equal_opportunity_gap": 0.3944,
+        "female_approval": 0.475
+      },
+      "0.56": {
+        "accuracy": 0.7622,
+        "approval_gap": 0.4394,
+        "equal_opportunity_gap": 0.4574,
+        "female_approval": 0.4235
+      },
+      "0.58": {
+        "accuracy": 0.7586,
+        "approval_gap": 0.4673,
+        "equal_opportunity_gap": 0.4922,
+        "female_approval": 0.3956
+      },
+      "0.6": {
+        "accuracy": 0.755,
+        "approval_gap": 0.5129,
+        "equal_opportunity_gap": 0.54,
+        "female_approval": 0.35
+      },
+      "0.62": {
+        "accuracy": 0.7486,
+        "approval_gap": 0.5556,
+        "equal_opportunity_gap": 0.5965,
+        "female_approval": 0.3074
+      },
+      "0.64": {
+        "accuracy": 0.7464,
+        "approval_gap": 0.5938,
+        "equal_opportunity_gap": 0.6335,
+        "female_approval": 0.2691
+      },
+      "0.66": {
+        "accuracy": 0.742,
+        "approval_gap": 0.6379,
+        "equal_opportunity_gap": 0.6835,
+        "female_approval": 0.225
+      }
+    },
+    "subgroups": [
+      {
+        "column": "Education",
+        "value": "Graduate",
+        "n_men": 376,
+        "n_women": 92,
+        "baseline_gap": 0.257723348956421,
+        "fixed_gap": 0.02603367963310943,
+        "eg_gap": 0.0333700511890106
+      },
+      {
+        "column": "Education",
+        "value": "Not Graduate",
+        "n_men": 113,
+        "n_women": 20,
+        "baseline_gap": 0.4404338364823322,
+        "fixed_gap": 0.030373159246082415,
+        "eg_gap": 0.005503551978630616
+      },
+      {
+        "column": "Married",
+        "value": "No",
+        "n_men": 130,
+        "n_women": 80,
+        "baseline_gap": 0.37318234357444807,
+        "fixed_gap": 0.01900304727725377,
+        "eg_gap": 0.031353815562937926
+      },
+      {
+        "column": "Married",
+        "value": "Yes",
+        "n_men": 359,
+        "n_women": 32,
+        "baseline_gap": 0.059833737826204936,
+        "fixed_gap": -0.03860806441158893,
+        "eg_gap": -0.018508249494083917
+      },
+      {
+        "column": "Property_Area",
+        "value": "Rural",
+        "n_men": 151,
+        "n_women": 24,
+        "baseline_gap": 0.5131578947368421,
+        "fixed_gap": -0.08991228070175439,
+        "eg_gap": -0.12061403508771928
+      },
+      {
+        "column": "Property_Area",
+        "value": "Semiurban",
+        "n_men": 172,
+        "n_women": 55,
+        "baseline_gap": 0.08305822262166418,
+        "fixed_gap": 0.004814066685056795,
+        "eg_gap": 0.0148100030551378
+      },
+      {
+        "column": "Property_Area",
+        "value": "Urban",
+        "n_men": 166,
+        "n_women": 33,
+        "baseline_gap": 0.48251221325668553,
+        "fixed_gap": 0.17690384586595598,
+        "eg_gap": 0.17999271446179332
+      },
+      {
+        "column": "Self_Employed",
+        "value": "No",
+        "n_men": 426,
+        "n_women": 97,
+        "baseline_gap": 0.2708830022075055,
+        "fixed_gap": 0.021621867289962293,
+        "eg_gap": 0.01915205817426302
+      },
+      {
+        "column": "Self_Employed",
+        "value": "Yes",
+        "n_men": 63,
+        "n_women": 15,
+        "baseline_gap": 0.44359919571045575,
+        "fixed_gap": 0.04178954423592496,
+        "eg_gap": 0.07751340482573721
+      }
+    ]
   },
   "sweep": {
     "0.0": {
@@ -287,6 +557,17 @@
           "female_tpr": 0.9783,
           "dp_diff": 0.032,
           "eo_diff": 0.0852
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.8055,
+          "approval_gap": 0.0277,
+          "equal_opportunity_gap": -0.0028,
+          "male_approval": 0.8571,
+          "female_approval": 0.8294,
+          "male_tpr": 0.9755,
+          "female_tpr": 0.9783,
+          "dp_diff": 0.0305,
+          "eo_diff": 0.0919
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.7983,
@@ -333,6 +614,17 @@
           "female_tpr": 0.0229,
           "dp_diff": 0.0173,
           "eo_diff": 0.0704
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.0218,
+          "approval_gap": 0.0226,
+          "equal_opportunity_gap": 0.0229,
+          "male_approval": 0.0264,
+          "female_approval": 0.0186,
+          "male_tpr": 0.0069,
+          "female_tpr": 0.0229,
+          "dp_diff": 0.0182,
+          "eo_diff": 0.0681
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.0261,
@@ -383,6 +675,17 @@
           "dp_diff": 0.0327,
           "eo_diff": 0.0874
         },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.805,
+          "approval_gap": 0.0284,
+          "equal_opportunity_gap": -0.0028,
+          "male_approval": 0.8578,
+          "female_approval": 0.8294,
+          "male_tpr": 0.9755,
+          "female_tpr": 0.9783,
+          "dp_diff": 0.0312,
+          "eo_diff": 0.0941
+        },
         "Fixed (Fairlearn)": {
           "accuracy": 0.7972,
           "approval_gap": 0.0347,
@@ -428,6 +731,17 @@
           "female_tpr": 0.0229,
           "dp_diff": 0.0169,
           "eo_diff": 0.0713
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.0215,
+          "approval_gap": 0.0225,
+          "equal_opportunity_gap": 0.0229,
+          "male_approval": 0.0261,
+          "female_approval": 0.0186,
+          "male_tpr": 0.0069,
+          "female_tpr": 0.0229,
+          "dp_diff": 0.0179,
+          "eo_diff": 0.0688
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.0244,
@@ -478,6 +792,17 @@
           "dp_diff": 0.0379,
           "eo_diff": 0.0967
         },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.8066,
+          "approval_gap": 0.035,
+          "equal_opportunity_gap": 0.0035,
+          "male_approval": 0.8585,
+          "female_approval": 0.8235,
+          "male_tpr": 0.9775,
+          "female_tpr": 0.9739,
+          "dp_diff": 0.035,
+          "eo_diff": 0.101
+        },
         "Fixed (Fairlearn)": {
           "accuracy": 0.8,
           "approval_gap": 0.0291,
@@ -523,6 +848,17 @@
           "female_tpr": 0.0304,
           "dp_diff": 0.0253,
           "eo_diff": 0.0776
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.0208,
+          "approval_gap": 0.0229,
+          "equal_opportunity_gap": 0.0363,
+          "male_approval": 0.0248,
+          "female_approval": 0.024,
+          "male_tpr": 0.0114,
+          "female_tpr": 0.0304,
+          "dp_diff": 0.0229,
+          "eo_diff": 0.0757
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.0247,
@@ -573,6 +909,17 @@
           "dp_diff": 0.0368,
           "eo_diff": 0.0916
         },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.8055,
+          "approval_gap": 0.0323,
+          "equal_opportunity_gap": 0.0006,
+          "male_approval": 0.8558,
+          "female_approval": 0.8235,
+          "male_tpr": 0.9745,
+          "female_tpr": 0.9739,
+          "dp_diff": 0.0323,
+          "eo_diff": 0.101
+        },
         "Fixed (Fairlearn)": {
           "accuracy": 0.7972,
           "approval_gap": 0.0257,
@@ -618,6 +965,17 @@
           "female_tpr": 0.0293,
           "dp_diff": 0.0196,
           "eo_diff": 0.0675
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.0278,
+          "approval_gap": 0.0201,
+          "equal_opportunity_gap": 0.0277,
+          "male_approval": 0.0205,
+          "female_approval": 0.0196,
+          "male_tpr": 0.0083,
+          "female_tpr": 0.0304,
+          "dp_diff": 0.02,
+          "eo_diff": 0.0665
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.0309,
@@ -668,6 +1026,17 @@
           "dp_diff": 0.0508,
           "eo_diff": 0.1245
         },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.8017,
+          "approval_gap": 0.0492,
+          "equal_opportunity_gap": 0.0179,
+          "male_approval": 0.8463,
+          "female_approval": 0.7971,
+          "male_tpr": 0.9657,
+          "female_tpr": 0.9478,
+          "dp_diff": 0.0497,
+          "eo_diff": 0.1073
+        },
         "Fixed (Fairlearn)": {
           "accuracy": 0.7928,
           "approval_gap": 0.0215,
@@ -713,6 +1082,17 @@
           "female_tpr": 0.0521,
           "dp_diff": 0.0393,
           "eo_diff": 0.0852
+        },
+        "Fairlearn in-training (no gender at decision time)": {
+          "accuracy": 0.0283,
+          "approval_gap": 0.0414,
+          "equal_opportunity_gap": 0.0549,
+          "male_approval": 0.0263,
+          "female_approval": 0.0403,
+          "male_tpr": 0.0197,
+          "female_tpr": 0.0494,
+          "dp_diff": 0.0407,
+          "eo_diff": 0.0742
         },
         "Fixed (Fairlearn)": {
           "accuracy": 0.0282,

@@ -29,6 +29,7 @@ from fairlearn.metrics import (
     false_positive_rate,
 )
 from fairlearn.postprocessing import ThresholdOptimizer
+from fairlearn.reductions import DemographicParity, ExponentiatedGradient
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score
@@ -42,6 +43,9 @@ SENSITIVE_SOURCE = "Gender"  # the gender column in the CSV (Male / Female)
 DEFAULT_BIAS = 0.30  # share of truly-good women whose TRAINING label is flipped to "default"
 SHOWCASE_SEED = 8  # a typical split (close to the 20-split average), used only to illustrate one person
 MODELS = ["Baseline", "Fixed (Fairlearn)"]
+EG_NAME = "Fairlearn in-training (no gender at decision time)"
+SUBGROUP_COLS = ["Property_Area", "Married", "Education", "Self_Employed"]
+DIAL_CUTS = [round(x, 2) for x in np.arange(0.20, 0.661, 0.02)]
 
 
 # --------------------------------------------------------------------------- data
@@ -146,6 +150,16 @@ class FairLoanModels:
         self.unaware = new_lr().fit(
             self.pre_unaware.transform(Xtr.drop(columns="female")), self.ytr_biased
         )
+
+        # 5. Fairness built in DURING training (ExponentiatedGradient). Gender is used only to train;
+        #    the finished model never sees it, so it needs no gender at decision time.
+        self.eg = ExponentiatedGradient(
+            new_lr(), DemographicParity(), eps=0.02, max_iter=30
+        ).fit(
+            self.pre_unaware.transform(Xtr.drop(columns="female")),
+            self.ytr_biased,
+            sensitive_features=self.atr,
+        )
         return self
 
     # -- predictions on raw dataframes ---------------------------------------
@@ -209,6 +223,7 @@ def predictions(m: FairLoanModels) -> dict:
         "Baseline": m.baseline.predict(m.Xte),
         "Fixed (Fairlearn)": m.fixed.predict(m.Xte, sensitive_features=m.ate, random_state=m.seed),
         "Baseline without gender column": m.unaware.predict(Xte_p),
+        EG_NAME: m.eg.predict(Xte_p, random_state=m.seed),
         "Reference (trained on fair labels)": m.reference.predict(m.Xte),
     }
 
@@ -217,16 +232,74 @@ def evaluate_all(m: FairLoanModels) -> dict:
     return {name: evaluate(m.yte, pred, m.ate) for name, pred in predictions(m).items()}
 
 
+
+# ------------------------------------------------- fairness dial and subgroup views
+def _dial_rows(m: FairLoanModels) -> list:
+    """Move the women's approval cut-off (men stay at 0.5) and record what happens."""
+    sc, a, y = m.score(m.Xte_raw), m.ate, m.yte
+    rows = []
+    for cut in DIAL_CUTS:
+        pred = np.where(a == 1, sc >= cut, sc >= 0.5).astype(int)
+        rows.append(
+            dict(
+                cutoff=cut,
+                accuracy=float(accuracy_score(y, pred)),
+                approval_gap=float(pred[a == 0].mean() - pred[a == 1].mean()),
+                equal_opportunity_gap=float(pred[(a == 0) & (y == 1)].mean() - pred[(a == 1) & (y == 1)].mean()),
+                female_approval=float(pred[a == 1].mean()),
+            )
+        )
+    return rows
+
+
+_SUB_MODELS = {"Baseline": "baseline", "Fixed (Fairlearn)": "fixed", EG_NAME: "eg"}
+
+
+def _pool_subgroups(store: dict, m: FairLoanModels, preds: dict) -> None:
+    """Add this split's approvals to running totals per subgroup, model and gender."""
+    for col in SUBGROUP_COLS:
+        for val in m.Xte_raw[col].unique():
+            mask = (m.Xte_raw[col] == val).to_numpy()
+            for name, key in _SUB_MODELS.items():
+                for g in (0, 1):
+                    sel = mask & (m.ate == g)
+                    cell = store.setdefault((col, str(val), key, g), [0, 0])
+                    cell[0] += int(preds[name][sel].sum())
+                    cell[1] += int(sel.sum())
+
+
+def _subgroup_table(store: dict) -> list:
+    df = load_data()
+    keys = sorted({(c, v) for c, v, _, _ in store})
+    out = []
+    for col, val in keys:
+        row = {
+            "column": col,
+            "value": val,
+            "n_men": int(((df[col].astype(str) == val) & (df["female"] == 0)).sum()),
+            "n_women": int(((df[col].astype(str) == val) & (df["female"] == 1)).sum()),
+        }
+        for key in ("baseline", "fixed", "eg"):
+            rate = {}
+            for g in (0, 1):
+                ap, tot = store[(col, val, key, g)]
+                rate[g] = ap / tot if tot else None
+            row[key + "_gap"] = None if rate[0] is None or rate[1] is None else float(rate[0] - rate[1])
+        out.append(row)
+    return out
+
 # ------------------------------------------------------------ multi-seed robustness
 def multi_seed(bias: float, seeds=range(20), population: bool = False) -> dict:
     """Average over many random splits - the test set is small, so one split is noisy.
 
     population=True also averages the 'qualified women rejected' counts and the gender-flip test.
     """
-    rows, pop = [], []
-    for s in seeds:
-        m = FairLoanModels(seed=s, bias=bias).fit()
-        for name, res in evaluate_all(m).items():
+    rows, pop, dial, sub = [], [], [], {}
+    for s_ in seeds:
+        m = FairLoanModels(seed=s_, bias=bias).fit()
+        preds = predictions(m)
+        for name, pred in preds.items():
+            res = evaluate(m.yte, pred, m.ate)
             rows.append(
                 dict(
                     model=name,
@@ -244,6 +317,8 @@ def multi_seed(bias: float, seeds=range(20), population: bool = False) -> dict:
         if population:
             wr, cf = wrongly_rejected_counts(m), counterfactual_flip_rates(m)
             pop.append({**wr, **cf})
+            dial.extend(_dial_rows(m))
+            _pool_subgroups(sub, m, preds)
     df = pd.DataFrame(rows)
     mean, std = df.groupby("model").mean(), df.groupby("model").std()
     out = {
@@ -253,6 +328,9 @@ def multi_seed(bias: float, seeds=range(20), population: bool = False) -> dict:
     }
     if population:
         out["population"] = {k: float(v) for k, v in pd.DataFrame(pop).mean().items()}
+        out["dial"] = pd.DataFrame(dial).groupby("cutoff").mean().round(4).to_dict("index")
+        out["dial"] = {str(k): v for k, v in out["dial"].items()}
+        out["subgroups"] = _subgroup_table(sub)
     return out
 
 
