@@ -1,13 +1,3 @@
----
-title: FairLoan
-emoji: ⚖️
-colorFrom: blue
-colorTo: red
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # ⚖️ FairLoan — when the training data has a bias
 
 Catch it → Fix it → Prove it. A loan-approval model learns an unfairness that was hiding in its historical data; we measure it, fix it with Fairlearn, and show one real person whose decision flips.
